@@ -1,8 +1,7 @@
 <template>
   <div class="pt-16 px-4">
     <!-- <h1>Upcoming Events</h1> -->
-    <EventCard />
-    <EventCard />
+    <EventCard v-for="event in events" :event=event :key=event.id />
   </div>
 </template>
 
@@ -13,6 +12,14 @@ export default {
   name: 'home',
   components: {
     EventCard
+  },
+  data() {
+    return {
+      events: []
+    }
+  },
+  mounted() {
+    fetch('')
   }
 }
 </script>
