@@ -19,7 +19,15 @@ export default {
     }
   },
   mounted() {
-    fetch('')
+    fetch('http://localhost:5000/events', {
+      method: 'GET'
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(err => {
+      console.log(err);
+    })
   }
 }
 </script>

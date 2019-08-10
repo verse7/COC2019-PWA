@@ -72,19 +72,32 @@ export default {
         // perform a reverse geolocation query to get street address
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}}&key=AIzaSyAxxF7vCWo_cgyLv2-JE9wYHJvVwsAJJjY`)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(err => {
-          console.log(err);
-        })
+
+        location = `{${lat},${lng}}`;
       });
       const base64ImageContent = this.img.src.replace(/^data:image\/(png|jpg);base64,/, "");
       const blob = this.base64ToBlob(base64ImageContent, 'image/png');
 
       const formData = new FormData();
       formData.append('picture', blob);
+
+      const details = {};
+      details.title = 'Test Title';
+      details.manpower_quota = 100;
+      details.location = location;
+
+      formData.append('details', JSON.stringify(details));
+
+      fetch('http://localhost:5000/events', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      })
 
       console.log('uploading');
     },
