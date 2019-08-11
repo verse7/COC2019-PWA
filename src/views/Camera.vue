@@ -2,7 +2,7 @@
 <div>
   <div class="flex content-center absolute bottom-0 mb-4 px-4 py-2 mx-auto z-50 inset-x-0 top-0">
     <router-link to="/">
-      <CloseIcon class="opacity-75 close-icon" w="32px" h="32px"/>
+      <CloseIcon class="opacity-75 close-icon" w="24px" h="24px"/>
     </router-link>
   </div>
   <video v-show="!isCaptured" class="camera-feed z-10" id="player" autoplay></video>
@@ -68,38 +68,60 @@ export default {
 
     handleUpload() {
       let location;
-      navigator.geolocation.getCurrentPosition(position => {
+      navigator.geolocation.getCurrentPosition((position) => {
         // perform a reverse geolocation query to get street address
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
-        location = `{${lat},${lng}}`;
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAxxF7vCWo_cgyLv2-JE9wYHJvVwsAJJjY`, {
+          method: 'GET',
+          mode: 'cors'
+        })
+        .then(response => response.json())
+        .then(data => {
+          const street = data.results[1].formatted_address;
+          location = street;
+
+          const canvas = document.getElementById('canvas');
+
+          canvas.toBlob(function(blob) {
+            const file = new File([blob], `${location}.jpg`, {type: "application/octet-stream"});
+
+            console.log(file);
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const details = {};
+            details.title = `${location.split(',')[0]} Cleanup`;
+            details.manpower_quota = 10;
+            details.location = location;
+
+            formData.append('details', JSON.stringify(details));
+
+            fetch('http://localhost:5000/events', {
+              method: 'POST',
+              mode: 'cors',
+              body: formData
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => {
+              console.log(err);
+            })
+          }, "image/jpeg", 0.75);
+
+
+
+          console.log('uploading');
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      }, err => {
+        console.log(err)
+      }, {
+        enableHighAccuracy: true
       });
-      const base64ImageContent = this.img.src.replace(/^data:image\/(png|jpg);base64,/, "");
-      const blob = this.base64ToBlob(base64ImageContent, 'image/png');
-
-      const formData = new FormData();
-      formData.append('picture', blob);
-
-      const details = {};
-      details.title = 'Test Title';
-      details.manpower_quota = 100;
-      details.location = location;
-
-      formData.append('details', JSON.stringify(details));
-
-      fetch('http://localhost:5000/events', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-
-      console.log('uploading');
     },
 
     base64ToBlob(base64, mime) {
@@ -134,6 +156,11 @@ video, canvas {
 
 .close-icon {
   fill: #fff;
+}
+
+.close-icon-container {
+  width: 40px;
+  height: 40px;
 }
 
 .camera-feed, .camera-capture {

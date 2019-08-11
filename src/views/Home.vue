@@ -20,10 +20,13 @@ export default {
   },
   mounted() {
     fetch('http://localhost:5000/events', {
-      method: 'GET'
+      method: 'GET',
+      mode: 'cors'
     })
-    .then(response => {
-      console.log(response);
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      this.events = data.data.events
     })
     .catch(err => {
       console.log(err);
