@@ -39,6 +39,9 @@ export default {
 
     const constraints = {
       video: true,
+      facingMode: { 
+        exact: 'environment'
+      }
     };
 
     // Attach the video stream to the video element and autoplay.
@@ -96,7 +99,7 @@ export default {
 
             formData.append('details', JSON.stringify(details));
 
-            fetch('http://localhost:5000/events', {
+            fetch('https://zidanewright.ml:5000/events', {
               method: 'POST',
               mode: 'cors',
               body: formData
