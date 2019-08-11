@@ -4,7 +4,7 @@
   <div class="px-6 py-4">
     <div class="font-bold text-xl mb-2">{{ event.title }}</div>
     <p class="flex content-center text-gray-700 text-base">
-      <PinIcon /> {{ event.location }}
+      <PinIcon width="32px" height="32px"/> {{ event.location }}
     </p>
   </div>
   <div class="px-6 py-4">
