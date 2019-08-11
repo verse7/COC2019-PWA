@@ -9,8 +9,9 @@
   </div>
   <div class="px-6 py-4">
     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-      <PeopleIcon width="16px" height="16px" /> {{ event.attendees.length }} / {{ event.manpower_quota }}
+      <PeopleIcon width="16px" height="16px" /> {{ this.attendees }} / {{ event.manpower_quota }}
     </span>
+    <button class="bg-teal-400 text-gray-800 rounded-full py-2 px-4 hover:bg-teal-600 focus:outline-none focus:shadow-outline" @click="subscribe(event.id)">Sign Me Up</button>
   </div>
 </div>
 </template>
@@ -25,6 +26,34 @@ export default {
   components: {
     PeopleIcon,
     PinIcon
+  },
+  data() {
+    return {
+      attendees: 0
+    }
+  },
+  created () {
+    this.attendees = this.event.attendees.length;
+  },
+  methods: {
+    subscribe(eventId) {
+      fetch(`http://localhost:5000/events/${eventId}/subscribe?user=1`, {
+        method: 'POST',
+        mode: 'cors'
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data);
+        if (data.code === 21) {
+          this.attendees++;
+        } else {
+          alert('You are already a member');
+        }
+      })
+      .catch(err => {
+        console.log('error!: ', err);
+      })
+    }
   }
 }
 </script>
