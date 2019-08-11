@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     subscribe(eventId) {
-      fetch(`http://zidanewright.ml:5000/${eventId}/subscribe?user=1`, {
+      fetch(`https://zidanewright.ml:5000/${eventId}/subscribe?user=1`, {
         method: 'POST',
         mode: 'cors'
       })
