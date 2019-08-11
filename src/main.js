@@ -9,7 +9,7 @@ import io from 'socket.io-client'
 import './main.css';
 
 Vue.config.productionTip = false
-Vue.prototype.$socket = io('http://localhost:5000');
+Vue.prototype.$socket = io('http://zidanewright.ml:5000');
 
 new Vue({
   router,

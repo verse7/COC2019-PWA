@@ -19,7 +19,7 @@ export default {
     }
   },
   mounted() {
-    fetch('https://zidanewright.ml:5000/events', {
+    fetch('http://zidanewright.ml:5000/events', {
       method: 'GET',
       mode: 'cors'
     })

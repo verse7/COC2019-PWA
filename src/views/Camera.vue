@@ -99,7 +99,7 @@ export default {
 
             formData.append('details', JSON.stringify(details));
 
-            fetch('https://zidanewright.ml:5000/events', {
+            fetch('http://zidanewright.ml:5000/events', {
               method: 'POST',
               mode: 'cors',
               body: formData
