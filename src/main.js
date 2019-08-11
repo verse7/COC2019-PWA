@@ -4,9 +4,12 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
+import io from 'socket.io-client'
+
 import './main.css';
 
 Vue.config.productionTip = false
+Vue.prototype.$socket = io('http://localhost:5000');
 
 new Vue({
   router,

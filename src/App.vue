@@ -31,6 +31,11 @@ export default {
   components: {
     Navbar,
     CameraFab
+  },
+  mounted() {
+    this.$socket.on('connect', () => {
+      console.log('connected to server');
+    });
   }
 }
 </script>
